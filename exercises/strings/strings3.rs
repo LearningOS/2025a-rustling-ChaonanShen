@@ -3,6 +3,8 @@
 // Execute `rustlings hint strings3` or use the `hint` watch subcommand for a
 // hint.
 
+// I AM NOT DONE 
+
 // 写的太复杂了，str本身已有trim方法
 // fn trim_me(input: &str) -> String {
 //     // Remove whitespace from both ends of a string!
