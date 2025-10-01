@@ -3,7 +3,6 @@
 // Execute `rustlings hint options1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE 
 // 解构Option获取数据，除了模式匹配和不安全的unwrap，还有办法吗
 
 // This function returns how much icecream there is left in the fridge.
