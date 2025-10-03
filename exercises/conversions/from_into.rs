@@ -42,17 +42,16 @@ impl Default for Person {
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
-        match s.len() {
-            0 => Person::default(),
-            _ => {
-                let ps: Vec<_> = s.split(',').collect();
-                if ps.len() != 2 { return Person::default(); }
-                if ps[0].len() == 0 || ps[1].len() == 0 { return Person::default(); }
-                match ps[1].parse::<usize>() {
-                    Err(e) => Person::default(),
-                    Ok(num) => Person{name: ps[0].to_string(), age: num}
-                }
-            }
+        if s.is_empty() { return Person::default(); }
+
+        let (name, age_str) = match s.split_once(',') {
+            None => {return Person::default(); },
+            Some(parts) => parts,
+        };
+        if name.is_empty()  { return Person::default(); }
+        match age_str.parse::<usize>() {
+            Err(e) => Person::default(),
+            Ok(num) => Person{name: name.to_string(), age: num}
         }
     }
 }
