@@ -2,7 +2,6 @@
 	queue
 	This question requires you to use queues to implement the functionality of the stac
 */
-// I AM NOT DONE
 
 #[derive(Debug)]
 pub struct Queue<T> {
@@ -52,30 +51,44 @@ impl<T> Default for Queue<T> {
     }
 }
 
+/*
+用两个队列实现一个栈
+    q1 q2
+    q1直接插入
+    每次要读取，就把q1前size-1元素都放到q2，最后一个元素返回，然后q1/q2交换
+*/ 
+
 pub struct myStack<T>
 {
-	//TODO
-	q1:Queue<T>,
-	q2:Queue<T>
+	q1:Queue<T>, 
+	q2:Queue<T> 
 }
 impl<T> myStack<T> {
     pub fn new() -> Self {
         Self {
-			//TODO
 			q1:Queue::<T>::new(),
 			q2:Queue::<T>::new()
         }
     }
     pub fn push(&mut self, elem: T) {
-        //TODO
+        self.q1.enqueue(elem);
     }
     pub fn pop(&mut self) -> Result<T, &str> {
-        //TODO
-		Err("Stack is empty")
+        if self.is_empty() {
+		    Err("Stack is empty")
+        } else {
+            while self.q1.size() > 1 {
+                self.q2.enqueue(self.q1.dequeue().unwrap());
+            }
+            let ret = self.q1.dequeue().unwrap(); // 返回的元素先保存
+            // q1/q2交换
+            std::mem::swap(&mut self.q1, &mut self.q2);
+
+            Ok(ret)
+        }
     }
     pub fn is_empty(&self) -> bool {
-		//TODO
-        true
+		self.q1.is_empty() && self.q2.is_empty()
     }
 }
 
