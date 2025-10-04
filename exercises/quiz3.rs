@@ -16,7 +16,15 @@
 //
 // Execute `rustlings hint quiz3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+pub trait Report {
+    fn student_name(&self) -> String { String::new() }
+    fn student_age(&self) -> u8 { 0 }
+    fn grade(&self) -> String { String::new() }
+    fn print(&self) -> String {
+        format!("{} ({}) - achieved a grade of {}",
+            &self.student_name(), &self.student_age(), &self.grade())
+    }
+}
 
 pub struct ReportCard {
     pub grade: f32,
@@ -24,11 +32,22 @@ pub struct ReportCard {
     pub student_age: u8,
 }
 
-impl ReportCard {
-    pub fn print(&self) -> String {
-        format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade)
-    }
+impl Report for ReportCard {
+    fn student_name(&self) -> String { self.student_name.clone() }
+    fn student_age(&self) -> u8 { self.student_age }
+    fn grade(&self) -> String { self.grade.to_string() }
+}
+
+pub struct ReportCard2 {
+    pub grade: &'static str,
+    pub student_name: String,
+    pub student_age: u8,
+}
+
+impl Report for ReportCard2 {
+    fn student_name(&self) -> String { self.student_name.clone() }
+    fn student_age(&self) -> u8 { self.student_age }
+    fn grade(&self) -> String { self.grade.to_string() }    
 }
 
 #[cfg(test)]
@@ -51,8 +70,8 @@ mod tests {
     #[test]
     fn generate_alphabetic_report_card() {
         // TODO: Make sure to change the grade here after you finish the exercise.
-        let report_card = ReportCard {
-            grade: 2.1,
+        let report_card = ReportCard2 {
+            grade: "A+",
             student_name: "Gary Plotter".to_string(),
             student_age: 11,
         };
