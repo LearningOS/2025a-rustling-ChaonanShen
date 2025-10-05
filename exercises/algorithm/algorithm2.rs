@@ -46,6 +46,10 @@ impl<T> LinkedList<T> {
         }
     }
 
+    pub fn len(&self) -> u32 {
+        self.length
+    }
+
     pub fn add(&mut self, obj: T) {
         let mut node = Box::new(Node::new(obj));
         node.next = None;
@@ -72,9 +76,38 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn reverse(&mut self){
-		// TODO
-	}
+
+    pub fn reverse(&mut self) {
+        let mut i_next = self.start;
+        let mut j_next = self.end;
+        if self.len() > 2 {
+            let mut i = 0;
+            let mut j = self.len() - 1;
+            while i < j {
+                let i_node = i_next; // 注意 i_node一定是非None，但i_next不一定
+                let j_node: Option<NonNull<Node<T>>> = j_next;
+
+                // unsafe { println!("i={} j={}, i_node: {:?} j_node: {:?}", i, j, *i_node.unwrap().as_ptr(), *j_node.unwrap().as_ptr()); }
+
+                i_next = unsafe { (*i_node.unwrap().as_ptr()).next };
+                j_next = unsafe { (*j_node.unwrap().as_ptr()).prev };
+
+                // unsafe { println!("i={} j={}, i_node: {:?} j_node: {:?}", i, j, *i_next.unwrap().as_ptr(), *j_next.unwrap().as_ptr()); }
+
+                // 找到i j对应节点并交换
+                // 其实只是交换里面指针 - 不对，只是这样交换两个Option/NonNull没用，因为里面Node中val/next/prev都跟着一切交换，我实际上是想交换val而已
+                // 正确的做法应该还是找到这两个i_node/j_node之后，改变next/prev指针指向
+                // std::mem::swap(&mut i_node, &mut j_node); 
+
+                // 这里我作弊下，直接交换val
+                // TODO: 未来还是要改成直接修改指针
+                unsafe { std::mem::swap(&mut (*i_node.unwrap().as_ptr()).val, &mut (*j_node.unwrap().as_ptr()).val); }
+
+                i += 1;
+                j -= 1;
+            }
+        }
+    }
 }
 
 impl<T> Display for LinkedList<T>
