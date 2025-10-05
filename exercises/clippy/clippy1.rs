@@ -9,8 +9,6 @@
 // Execute `rustlings hint clippy1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
 fn main() {
     let pi = std::f32::consts::PI; // 数学常数直接用std::f32::consts里保存的
     let radius = 5.00f32;
