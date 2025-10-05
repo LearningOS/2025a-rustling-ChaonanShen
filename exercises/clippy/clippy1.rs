@@ -11,10 +11,8 @@
 
 // I AM NOT DONE
 
-use std::f32;
-
 fn main() {
-    let pi = 3.14f32;
+    let pi = std::f32::consts::PI; // 数学常数直接用std::f32::consts里保存的
     let radius = 5.00f32;
 
     let area = pi * f32::powi(radius, 2);
