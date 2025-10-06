@@ -7,6 +7,7 @@
 use std::collections::VecDeque;
 
 // Define a graph
+#[derive(Debug)]
 struct Graph {
     adj: Vec<Vec<usize>>, 
 }
@@ -31,10 +32,44 @@ impl Graph {
 		//TODO
 
         let mut visit_order = vec![];
+        let mut q = VecDeque::new();
+
+        if start >= self.adj.len() {
+            return visit_order;
+        }
+
+        q.push_back(start);        
+
+        while !q.is_empty() {
+            if let Some(front) = q.pop_front() {
+                // 取出队列中一个节点，访问其未访问过的节点
+                visit_order.push(front);
+
+                for new_v in &self.adj[front] {
+                    if !visit_order.contains(&new_v) && !q.contains(&new_v) {
+                        q.push_back(*new_v);
+                    }
+                }
+            }
+        }
+
         visit_order
     }
 }
 
+fn main() {
+    let mut graph = Graph::new(5);
+    graph.add_edge(0, 1);
+    graph.add_edge(0, 4);
+    graph.add_edge(1, 2);
+    graph.add_edge(1, 3);
+    graph.add_edge(1, 4);
+    graph.add_edge(2, 3);
+    graph.add_edge(3, 4);
+
+    let visited_order = graph.bfs_with_return(0);
+    assert_eq!(visited_order, vec![0, 1, 4, 2, 3]);
+}
 
 #[cfg(test)]
 mod tests {
